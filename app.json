@@ -9,6 +9,7 @@
     "ios": {
       "supportsTablet": true
     },
+    "experiments": { "baseUrl": "/iwamad-sis3-tasks" },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
@@ -20,6 +21,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
