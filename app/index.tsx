@@ -7,10 +7,11 @@ import {
   View,
 } from "react-native";
 
+import { TaskRow } from "../src/components/TaskRow";
 import { useTasks } from "../src/context/TasksContext";
 
 export default function TasksScreen() {
-  const { tasks } = useTasks();
+  const { tasks, deleteTask } = useTasks();
 
   return (
     <View style={styles.container}>
@@ -25,30 +26,18 @@ export default function TasksScreen() {
       </Pressable>
 
       <Text style={styles.hint}>
-        Tap a task to see its details.
+        Swipe a task left to delete it.
       </Text>
 
       <FlatList
         data={tasks}
-        keyExtractor={(t) => String(t.id)}
+        keyExtractor={(task) => String(task.id)}
         renderItem={({ item }) => (
-          <Pressable
+          <TaskRow
+            task={item}
             onPress={() => router.push(`/tasks/${item.id}`)}
-            style={({ pressed }) => [
-              styles.taskRow,
-              pressed && styles.pressed,
-            ]}
-          >
-            <View style={styles.taskInfo}>
-              <Text style={styles.taskTitle}>
-                {item.title}
-              </Text>
-
-              <Text style={styles.status}>
-                {item.completed ? "✓ Completed" : "○ In progress"}
-              </Text>
-            </View>
-          </Pressable>
+            onDelete={deleteTask}
+          />
         )}
         ListEmptyComponent={
           <Text style={styles.empty}>
@@ -75,45 +64,21 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   buttonText: {
-    color: "#FFFFFF",
+    color: "#fff",
     fontSize: 16,
     fontWeight: "600",
+  },
+  pressed: {
+    opacity: 0.65,
   },
   hint: {
     marginBottom: 12,
-    color: "#777777",
+    color: "#777",
     fontSize: 13,
-  },
-  taskRow: {
-    minHeight: 64,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    padding: 14,
-    marginBottom: 10,
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: "#EEEEEE",
-  },
-  taskInfo: {
-    gap: 5,
-  },
-  taskTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#222222",
-  },
-  status: {
-    fontSize: 13,
-    color: "#777777",
   },
   empty: {
     textAlign: "center",
     marginTop: 40,
-    color: "#777777",
-    fontSize: 15,
-  },
-  pressed: {
-    opacity: 0.65,
-    transform: [{ scale: 0.98 }],
+    color: "#777",
   },
 });
